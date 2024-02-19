@@ -1,26 +1,32 @@
-pipeline {
+pipeline{
     agent any
-    stages{
-
-        stage('Build docker image'){
+    
+    stages {
+        stage('Git Clone') {
             steps{
-                script{
-                    sh 'docker build -t chaitug/python-image -f https://github.com/Chaitanyagude/devops-feb/blob/master/Dockerfile .
- .'
+                git 'https://github.com/Chaitanyagude/devops-feb.git'     
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                  sh 'docker build -t chaitug/nodeapp:latest .'
                 }
             }
         }
-        stage('Push image to Hub'){
-            steps{
-                script{
-                   withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                   sh 'docker login -u chaitug -p ${dockerhubpwd}'
-
-}
-                   sh 'docker push chaitug/python-image'
-                }
+        stage('Docker Login') {
+            steps {
+                script {
+                    sh 'docker login -u chaitug -p Chaitu@123'
+                }   
             }
         }
-
-    }
+        stage('Docker Push') {
+            steps {
+                script {
+                    sh 'docker push chaitug/nodeapp:latest'
+                }
+            }    
+        }
+    }   
 }
