@@ -1,11 +1,12 @@
 pipeline {
     agent any
     stages{
-        
+
         stage('Build docker image'){
             steps{
                 script{
-                    sh 'docker build -t chaitug/python-image .'
+                    sh 'docker build -t chaitug/python-image -f https://github.com/Chaitanyagude/devops-feb/blob/master/Dockerfile .
+ .'
                 }
             }
         }
